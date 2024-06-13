@@ -4,14 +4,15 @@ public class MainFrame implements Runnable {
 
     private GraphicsPanel panel;
 
-    public MainFrame(String name) {
-        JFrame frame = new JFrame("Super Mario Game");
+    public MainFrame(int speed) {
+        JFrame frame = new JFrame("Tetris");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1280, 800); // 540 height of image + 40 for window menu bar
+        frame.setSize(700, 500); // 540 height of image + 40 for window menu bar
         frame.setLocationRelativeTo(null); // auto-centers frame in screen
+        frame.setResizable(false);
 
         // create and add panel
-        panel = new GraphicsPanel(name);
+        panel = new GraphicsPanel(speed);
         frame.add(panel);
 
         // display the frame

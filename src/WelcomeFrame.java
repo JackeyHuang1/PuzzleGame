@@ -4,12 +4,9 @@ public class WelcomeFrame {
     private WelcomePanel panel;
 
     public WelcomeFrame() {
-        JFrame frame = new JFrame("A regular game");
-        if (WelcomePanel.getCleared()) {
-            frame.setTitle("The first night");
-        }
+        JFrame frame = new JFrame("Tetris");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);
+        frame.setSize(500, 300);
         frame.setLocationRelativeTo(null); // auto-centers frame in screen
 
         // create and add panel

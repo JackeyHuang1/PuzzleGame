@@ -1,63 +1,50 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
-public class WelcomePanel extends JPanel implements ActionListener {
+public class WelcomePanel extends JPanel implements ActionListener, ChangeListener {
 
-    private JTextField textField;
     private JButton submitButton;
-    private JButton clearButton;
     private JFrame enclosingFrame;
-    private BufferedImage goomba;
-    private static boolean cleared = true;
-    private static String name = "a";
+    private JSlider slider;
 
     public WelcomePanel(JFrame frame) {
         enclosingFrame = frame;
-        try {
-            goomba = ImageIO.read(new File("src/goomba.png"));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        textField = new JTextField(10);
-        submitButton = new JButton("Submit");
-        clearButton = new JButton("Clear");
-        add(textField);  // textField doesn't need a listener since nothing needs to happen when we type in text
+        submitButton = new JButton("Start");
+        slider = new JSlider(1, 15);
         add(submitButton);
-        if (!cleared) {
-            add(clearButton);
-        } else {
-            textField.setText(name);
-            textField.setEnabled(false);
-        }
+        add(slider);
         submitButton.addActionListener(this);
-        clearButton.addActionListener(this);
+        slider.addChangeListener(this);
+
     }
 
-    public static boolean getCleared() {
-        return cleared;
-    }
+
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setFont(new Font("Arial", Font.BOLD, 16));
-        g.setColor(Color.RED);
-        if (cleared) {
-            g.drawString("You already entered your name. You cannot change it.", 40, 30);
-        } else {
-            g.drawString("Please enter your name:", 50, 30);
-        }
-        g.drawImage(goomba, 200, 50, null);
-        textField.setLocation(50, 50);
-        submitButton.setLocation(50, 100);
-        clearButton.setLocation(150, 100);
-
+        g.setColor(Color.BLUE);
+        g.drawString("Tetris Game", 40, 30);
+        g.drawString("Current Speed: " + slider.getValue(), 210, 50);
+        g.drawString("Recommended Speed for First Run is 5", 160, 70);
+        g.drawString("Controls", 50, 120);
+        g.drawString("Left Arrow for Left", 50, 140);
+        g.drawString("Right Arrow for Right", 50, 160);
+        g.drawString("Down Arrow for Down", 50, 180);
+        g.drawString("Z for Clockwise Rotation", 50, 200);
+        g.drawString("X for Counter-Clockwise Rotation", 50, 220);
+        g.drawString("All Inputs are TAP only. No Holding Keys", 50, 240);
+        submitButton.setLocation(50, 50);
+        repaint();
     }
 
     // ACTIONLISTENER INTERFACE METHODS
@@ -65,13 +52,16 @@ public class WelcomePanel extends JPanel implements ActionListener {
         if (e.getSource() instanceof JButton) {
             JButton button = (JButton) e.getSource();
             if (button == submitButton) {
-                String playerName = textField.getText();
-                name = playerName;
-                MainFrame f = new MainFrame(playerName);
+                int speed = slider.getValue();
+                MainFrame f = new MainFrame(speed);
                 enclosingFrame.setVisible(false);
-            } else {
-                textField.setText("");
+
             }
         }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+
     }
 }
